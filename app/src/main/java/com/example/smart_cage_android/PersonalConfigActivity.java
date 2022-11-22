@@ -8,8 +8,7 @@ import android.widget.TextView;
 
 public class PersonalConfigActivity extends AppCompatActivity {
 
-    private TextView tv_id, tv_name, tv_age;
-
+    private TextView tv_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,9 +21,5 @@ public class PersonalConfigActivity extends AppCompatActivity {
 
         tv_id.setText(userID);
 
-        tv_name = findViewById(R.id.tv_name);
-        String userName = intent.getStringExtra("userName");
-
-        tv_id.setText(userName);
     }
 }
