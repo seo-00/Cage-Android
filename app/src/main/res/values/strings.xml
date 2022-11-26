@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">smart_cage_android</string>
+    <string name="login_en">Login</string>
+    <string name="login">로그인</string>
+    <string name="signup">회원가입</string>
+    <string name="id">아이디</string>
+    <string name="pw">비밀번호</string>
 </resources>
