@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -38,16 +37,16 @@ public class RoRoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ro_ro);
 
-        text= (TextView)findViewById(R.id.result);
-
+        text = (TextView)findViewById(R.id.result);
     }
-    public void OnClick(View v){
+
+    public void OnClick(View v) {
         switch (v.getId()){
-            case R.id.button_roro:
+            case R.id.btn_update_val:
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        data=getjsonData();
+                        data = getJsonData();
 
                         runOnUiThread(new Runnable() {
                             @Override
@@ -60,10 +59,10 @@ public class RoRoActivity extends AppCompatActivity {
                 break;
         }
     }
-    String getjsonData() {
+
+    String getJsonData() {
 
         String response="";
-
 
         String queryUrl= "http://182.221.64.162:7579/Mobius/dashboard_test_1/group1-test/ae1-test/temperature/4-20221125114215929";
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
