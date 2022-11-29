@@ -104,6 +104,7 @@
         android:layout_marginTop="40dp"/>
 
     <ImageButton
+        android:id="@+id/btn_move_sensor"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@drawable/ic_detail"
@@ -233,7 +234,7 @@
 
     <TextView
         android:layout_width="0dp"
-        android:layout_height="90dp"
+        android:layout_height="100dp"
         android:background="@color/container_gray"
         android:textSize="25sp"
         android:text="roro는 귀엽다."

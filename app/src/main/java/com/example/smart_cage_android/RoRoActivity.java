@@ -3,12 +3,16 @@ package com.example.smart_cage_android;
 import static com.android.volley.Request.Method.GET;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
 import android.widget.TextView;
 
 import com.android.volley.Request;
+import com.example.smart_cage_android.databinding.ActivityRoRoBinding;
 
 import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
@@ -29,32 +33,48 @@ import okhttp3.Response;
 public class RoRoActivity extends AppCompatActivity {
 
     String data;
-    TextView temperature;
     XmlPullParser xpp;
+
+    ActivityRoRoBinding viewBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ro_ro);
+        viewBinding = ActivityRoRoBinding.inflate(getLayoutInflater());
 
-        temperature = (TextView)findViewById(R.id.result_temp);
-    }
+        viewBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RoRoActivity.this, ListActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
-    public void OnClick(View v) {
-        switch (v.getId()){
-            case R.id.btn_update_val:
+        viewBinding.btnMoveSensor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RoRoActivity.this, roroSensorActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        viewBinding.btnUpdateVal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         data = getJsonTempData();
                         runOnUiThread(new Runnable() {
                             @Override
-                            public void run() { temperature.setText(data); }
+                            public void run() { viewBinding.resultTemp.setText(data); }
                         });
                     }
                 }).start();
-                break;
-        }
+            }
+        });
+        setContentView(viewBinding.getRoot());
     }
 
     String getJsonTempData() {

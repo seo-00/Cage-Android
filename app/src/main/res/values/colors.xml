@@ -14,5 +14,6 @@
     <color name="text_gray">#302F2F</color>
     <color name="btn_photo">#DDF6DE</color>
     <color name="container_gray">#F4F2F2</color>
+    <color name="btn_green">#E491C108</color>
 
 </resources>
