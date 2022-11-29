@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.android.volley.Request;
 
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -28,8 +29,7 @@ import okhttp3.Response;
 public class RoRoActivity extends AppCompatActivity {
 
     String data;
-
-    TextView text;
+    TextView temperature;
     XmlPullParser xpp;
 
     @Override
@@ -37,7 +37,7 @@ public class RoRoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ro_ro);
 
-        text = (TextView)findViewById(R.id.result);
+        temperature = (TextView)findViewById(R.id.result_temp);
     }
 
     public void OnClick(View v) {
@@ -46,13 +46,10 @@ public class RoRoActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        data = getJsonData();
-
+                        data = getJsonTempData();
                         runOnUiThread(new Runnable() {
                             @Override
-                            public void run() {
-                                text.setText(data);
-                            }
+                            public void run() { temperature.setText(data); }
                         });
                     }
                 }).start();
@@ -60,9 +57,10 @@ public class RoRoActivity extends AppCompatActivity {
         }
     }
 
-    String getJsonData() {
+    String getJsonTempData() {
 
         String response="";
+        String con = "";
 
         String queryUrl= "http://182.221.64.162:7579/Mobius/dashboard_test_1/group1-test/ae1-test/temperature/4-20221125114215929";
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -89,12 +87,16 @@ public class RoRoActivity extends AppCompatActivity {
             bufferedReader.close();
 
             response = stringBuffer.toString();
+
             System.out.println(response);
+
+            JSONObject jsonObject = new JSONObject(response).getJSONObject("m2m:cin");
+            con = jsonObject.optString("con");
 
         }catch(Exception e){
             e.printStackTrace();
         }
-        return response;
+        return con + " ℃";
     }
 
 }

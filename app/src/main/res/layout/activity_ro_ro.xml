@@ -103,39 +103,112 @@
         app:layout_constraintTop_toBottomOf="@id/photo_profile"
         android:layout_marginTop="40dp"/>
 
-    <LinearLayout
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_detail"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="@id/container_condition"
+        app:layout_constraintBottom_toTopOf="@+id/container_condition"
+        android:layout_marginBottom="8dp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container_condition"
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="190dp"
         android:background="@color/container_gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_condition"
         android:layout_marginHorizontal="30dp"
-        android:layout_marginVertical="15dp"
-        android:orientation="vertical">
+        android:layout_marginVertical="15dp">
 
         <TextView
+            android:id="@+id/text_temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="text1" />
+            android:textSize="25sp"
+            android:text="@string/temperature"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginVertical="20dp"
+            android:layout_marginHorizontal="20dp"/>
+
         <TextView
+            android:id="@+id/result_temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="text2" />
+            android:textSize="28sp"
+            android:textColor="@color/black"
+            android:text="10 ℃"
+            app:layout_constraintStart_toEndOf="@id/text_temp"
+            app:layout_constraintBottom_toBottomOf="@id/text_temp"
+            android:layout_marginStart="15dp"/>
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/opt_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="최적: 5℃"
+            app:layout_constraintStart_toEndOf="@id/result_temp"
+            app:layout_constraintBottom_toBottomOf="@id/text_temp"
+            android:layout_marginStart="15dp"/>
 
-    <TextView
-        android:id="@+id/result"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="TextView"
-        app:layout_constraintTop_toBottomOf="@+id/text_condition"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginVertical="15dp"
-        android:layout_marginHorizontal="50dp" />
+        <TextView
+            android:id="@+id/text_hum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:text="@string/humidity"
+            app:layout_constraintStart_toStartOf="@id/text_temp"
+            app:layout_constraintTop_toBottomOf="@id/text_temp"
+            android:layout_marginVertical="20dp" />
+
+        <TextView
+            android:id="@+id/result_hum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="28sp"
+            android:textColor="@color/black"
+            android:text="60％"
+            app:layout_constraintBottom_toBottomOf="@id/text_hum"
+            app:layout_constraintStart_toEndOf="@id/text_hum"
+            android:layout_marginStart="15dp"/>
+
+        <TextView
+            android:id="@+id/opt_hum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="최적: 60％"
+            app:layout_constraintStart_toEndOf="@id/result_hum"
+            app:layout_constraintBottom_toBottomOf="@id/result_hum"
+            android:layout_marginStart="15dp"/>
+
+
+        <TextView
+            android:id="@+id/text_lig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:text="@string/light"
+            app:layout_constraintStart_toStartOf="@id/text_temp"
+            app:layout_constraintTop_toBottomOf="@id/text_hum"
+            android:layout_marginVertical="20dp"/>
+
+        <TextView
+            android:id="@+id/result_lig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="28sp"
+            android:textColor="@color/black"
+            android:text="OFF"
+            app:layout_constraintBottom_toBottomOf="@id/text_lig"
+            app:layout_constraintStart_toEndOf="@id/text_lig"
+            android:layout_marginStart="15dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/btn_update_val"
@@ -156,16 +229,20 @@
         android:text="@string/uniqueness"
         app:layout_constraintStart_toStartOf="@id/text_condition"
         app:layout_constraintTop_toBottomOf="@id/btn_update_val"
-        android:layout_marginTop="6dp"/>
+        android:layout_marginTop="5dp"/>
 
     <TextView
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="90dp"
         android:background="@color/container_gray"
+        android:textSize="25sp"
+        android:text="roro는 귀엽다."
         app:layout_constraintTop_toBottomOf="@+id/text_uniqueness"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="30dp"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="20dp"
         android:layout_marginVertical="8dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

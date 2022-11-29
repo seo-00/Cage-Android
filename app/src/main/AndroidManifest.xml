@@ -16,35 +16,42 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name="com.example.smart_cage_android.RoRoActivity"
+            android:name=".roroSensorActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.example.smart_cage_android.ListActivity"
+            android:name=".RoRoActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.example.smart_cage_android.PersonalConfigActivity"
+            android:name=".ListActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.example.smart_cage_android.RegisterActivity"
+            android:name=".PersonalConfigActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.example.smart_cage_android.loginActivity"
+            android:name=".RegisterActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".loginActivity"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
@@ -58,7 +65,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.smart_cage_android.MainActivity"
+            android:name=".MainActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
