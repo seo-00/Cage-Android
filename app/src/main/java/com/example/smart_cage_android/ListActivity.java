@@ -16,6 +16,7 @@ public class ListActivity extends AppCompatActivity {
 
     private Button btn_move;
     private Button roro;
+    private Button btn_cage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,15 @@ public class ListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ListActivity.this , MainActivity.class);
                 startActivity(intent); //activity 이동
+            }
+        });
+
+        btn_cage = findViewById(R.id.btn_cage);
+        btn_cage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent (ListActivity.this, CageManagementActivity.class);
+                startActivity(intent);
             }
         });
 
