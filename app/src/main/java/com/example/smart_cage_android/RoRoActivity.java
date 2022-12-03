@@ -33,6 +33,8 @@ import okhttp3.Response;
 public class RoRoActivity extends AppCompatActivity {
 
     String data;
+    String data_hum;
+    String data_bright;
     XmlPullParser xpp;
 
     ActivityRoRoBinding viewBinding;
@@ -65,11 +67,25 @@ public class RoRoActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        data = getJsonTempData();
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() { viewBinding.resultTemp.setText(data); }
-                        });
+                        while (true) {
+                            data = getJsonTempData();
+                            data_hum = getJsonHumData();
+                            data_bright = getJsonBrightData();
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    viewBinding.resultTemp.setText(data);
+                                    viewBinding.resultHum.setText(data_hum);
+                                    viewBinding.resultLig.setText(data_bright);
+                                }
+                            });
+                            try {
+                                Thread.sleep(5000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 }).start();
             }
@@ -79,15 +95,16 @@ public class RoRoActivity extends AppCompatActivity {
 
     String getJsonTempData() {
 
-        String response="";
+        String response = "";
         String con = "";
 
-        String queryUrl= "http://182.221.64.162:7579/Mobius/dashboard_test_1/group1-test/ae1-test/temperature/4-20221125114215929";
+        String queryUrl = "http://182.221.64.162:7579/Mobius/test-ae-1/temperature/la";
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        try{
-            URL url= new URL(queryUrl);
+        try {
+            URL url = new URL(queryUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             connection.setRequestMethod("GET");
@@ -101,7 +118,7 @@ public class RoRoActivity extends AppCompatActivity {
             StringBuffer stringBuffer = new StringBuffer();
             String inputLine;
 
-            while ((inputLine = bufferedReader.readLine()) != null)  {
+            while ((inputLine = bufferedReader.readLine()) != null) {
                 stringBuffer.append(inputLine);
             }
             bufferedReader.close();
@@ -113,10 +130,99 @@ public class RoRoActivity extends AppCompatActivity {
             JSONObject jsonObject = new JSONObject(response).getJSONObject("m2m:cin");
             con = jsonObject.optString("con");
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return con + " ℃";
     }
 
+
+    String getJsonHumData() {
+
+        String response_hum = "";
+        String con_hum = "";
+
+        String queryUrl_hum = "http://182.221.64.162:7579/Mobius/test-ae-1/humidity/la";
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            // humidity
+            URL url_hum = new URL(queryUrl_hum);
+            HttpURLConnection connection_hum = (HttpURLConnection) url_hum.openConnection();
+
+            connection_hum.setRequestMethod("GET");
+            connection_hum.setRequestProperty("Accept", "application/json");
+            connection_hum.setRequestProperty("X-M2M-RI", "dashboard_testing");
+            connection_hum.setRequestProperty("X-M2M-Origin", "dashboard_testing");
+
+            int responseCode_hum = connection_hum.getResponseCode();
+
+            BufferedReader bufferedReader_hum = new BufferedReader(new InputStreamReader(connection_hum.getInputStream()));
+            StringBuffer stringBuffer_hum = new StringBuffer();
+            String inputLine_hum;
+
+            while ((inputLine_hum = bufferedReader_hum.readLine()) != null) {
+                stringBuffer_hum.append(inputLine_hum);
+            }
+            bufferedReader_hum.close();
+
+            response_hum = stringBuffer_hum.toString();
+
+            System.out.println(response_hum);
+
+            JSONObject jsonObject_hum = new JSONObject(response_hum).getJSONObject("m2m:cin");
+            con_hum = jsonObject_hum.optString("con");
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return con_hum + "%";
+    }
+
+    String getJsonBrightData(){
+        String response_bright = "";
+        String con_bright = "";
+
+        String queryUrl_bright = "http://182.221.64.162:7579/Mobius/test-ae-1/brightness/la";
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            // brightness
+            URL url_bright = new URL(queryUrl_bright);
+            HttpURLConnection connection_bright = (HttpURLConnection) url_bright.openConnection();
+
+            connection_bright.setRequestMethod("GET");
+            connection_bright.setRequestProperty("Accept", "application/json");
+            connection_bright.setRequestProperty("X-M2M-RI", "dashboard_testing");
+            connection_bright.setRequestProperty("X-M2M-Origin", "dashboard_testing");
+
+
+            int responseCode_bright = connection_bright.getResponseCode();
+
+            BufferedReader bufferedReader_bright = new BufferedReader(new InputStreamReader(connection_bright.getInputStream()));
+            StringBuffer stringBuffer_bright = new StringBuffer();
+            String inputLine_bright;
+
+            while ((inputLine_bright = bufferedReader_bright.readLine()) != null) {
+                stringBuffer_bright.append(inputLine_bright);
+            }
+            bufferedReader_bright.close();
+
+            response_bright = stringBuffer_bright.toString();
+
+            System.out.println(response_bright);
+
+            JSONObject jsonObject_bright = new JSONObject(response_bright).getJSONObject("m2m:cin");
+            con_bright = jsonObject_bright.optString("con");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return con_bright + "lx";
+    }
 }
