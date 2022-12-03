@@ -2,9 +2,17 @@ package com.example.smart_cage_android;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.smart_cage_android.databinding.ActivityCageManagementBinding;
 import com.example.smart_cage_android.databinding.ActivityRoRoBinding;
@@ -15,12 +23,19 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class CageManagementActivity extends AppCompatActivity {
 
     ActivityCageManagementBinding viewBinding;
 
+    private String TAG = CageManagementActivity.class.getSimpleName();
+
+    //리스트뷰 변수
     String data;
+    //ListView listView;
+    ListViewAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,19 +43,52 @@ public class CageManagementActivity extends AppCompatActivity {
         viewBinding = ActivityCageManagementBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
 
-        viewBinding.btnUpdate.setOnClickListener(new View.OnClickListener() {
+        //리스트뷰 변수
+        //listView = (ListView) findViewById(R.id.listView);
+        adapter = new ListViewAdapter(); //리스트에 adpater 연결
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.clearItem();
+                data = getJsonTempData();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        viewBinding.listView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        }).start();
+
+        viewBinding.btnUpdate.setOnClickListener(new View.OnClickListener() {  //새로고침 버튼
             @Override
             public void onClick(View view) {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        adapter.clearItem();
                         data = getJsonTempData();
+
                         runOnUiThread(new Runnable() {
                             @Override
-                            public void run() { viewBinding.TextTest.setText(data); }
+                            public void run() {
+                                viewBinding.listView.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+                            }
                         });
                     }
                 }).start();
+            }
+        });
+
+        viewBinding.btnNewCage.setOnClickListener(new View.OnClickListener() { //새 케이지 등록 버튼
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CageManagementActivity.this, CageUpdateActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -95,8 +143,10 @@ public class CageManagementActivity extends AppCompatActivity {
                 else
                     mid_list[i] = mid_list[i].substring(9, mid_list[i].length() - 1);
 
-                result.append(mid_list[i]);
-                result.append("\n");
+                adapter.addItem(new CageItemList(mid_list[i]));
+
+                //result.append(mid_list[i]);
+                //result.append("\n");
 
             }
 
@@ -104,5 +154,57 @@ public class CageManagementActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return result.toString();
+    }
+
+    /* 리스트뷰 어댑터 */
+    public class ListViewAdapter extends BaseAdapter {
+        ArrayList<CageItemList> items = new ArrayList<CageItemList>();
+
+        @Override
+        public int getCount() {
+            return items.size();
+        }
+
+        public void addItem(CageItemList item) {
+            items.add(item);
+        }
+
+        public void clearItem() {
+            items.clear();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return items.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup viewGroup) {
+            final Context context = viewGroup.getContext();
+            final CageItemList itemList = items.get(position);
+
+            if(convertView == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.cage_listview_item, viewGroup, false);
+
+            } else {
+                View view = new View(context);
+                view = (View) convertView;
+            }
+
+            TextView tv_cage = (TextView) convertView.findViewById(R.id.tv_cage);
+
+
+            tv_cage.setText(itemList.getCage());
+
+            Log.d(TAG, "getView() - [ "+position+" ] "+itemList.getCage());
+
+            return convertView;  //뷰 객체 반환
+        }
     }
 }
